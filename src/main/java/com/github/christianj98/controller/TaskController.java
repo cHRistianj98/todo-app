@@ -13,8 +13,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
-
 
 @RestController
 public class TaskController {
@@ -60,7 +58,6 @@ public class TaskController {
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath().path(pathToResource).buildAndExpand(id).toUriString();
         return ResponseEntity.created(URI.create(uri)).body(createdTask);
     }
-
 
 
     @PutMapping("/tasks/{id}")
