@@ -5,11 +5,15 @@ import com.github.christianj98.model.TaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 
 @RestController
@@ -33,6 +37,31 @@ public class TaskController {
         logger.info("Custom pageable");
         return ResponseEntity.ok(repository.findAll(page).getContent());
     }
+
+    @GetMapping("/tasks/{id}")
+    public ResponseEntity<Task> readTask(@PathVariable int id) {
+        logger.info("Read one task");
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(repository.findById(id).get());
+    }
+
+    @PostMapping("/tasks")
+    public ResponseEntity<Task> createTask(@RequestBody @Valid Task task) {
+        logger.info("Create one task");
+        // assumption: id = 0 does not exist and id = 0 if id was not specified in the request
+        if (task.getId() != 0 && repository.existsById(task.getId())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        Task createdTask = repository.save(task);
+        String id = Integer.toString(createdTask.getId());
+        String pathToResource = "/tasks/{id}";
+        String uri = ServletUriComponentsBuilder.fromCurrentContextPath().path(pathToResource).buildAndExpand(id).toUriString();
+        return ResponseEntity.created(URI.create(uri)).body(createdTask);
+    }
+
+
 
     @PutMapping("/tasks/{id}")
     public ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
