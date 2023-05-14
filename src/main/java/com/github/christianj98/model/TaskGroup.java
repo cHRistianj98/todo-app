@@ -1,57 +1,21 @@
 package com.github.christianj98.model;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Entity
 @Table(name = "task_groups")
-public class TaskGroup {
+public class TaskGroup extends AbstractTaskBase {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @NotBlank(message = "Task group's description must not be empty")
-    private String description;
-
-    private boolean done;
+    @Embedded
+    private Audit audit = new Audit();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
     private Set<Task> tasks;
-
-    public TaskGroup() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public boolean isDone() {
-        return done;
-    }
-
-    public void setDone(boolean done) {
-        this.done = done;
-    }
 
     public Set<Task> getTasks() {
         return tasks;
@@ -62,7 +26,7 @@ public class TaskGroup {
     }
 
     public void updateFrom(final TaskGroup source) {
-        description = source.getDescription();
-        done = source.isDone();
+        this.setDescription(source.getDescription());
+        this.setDone(source.isDone());
     }
 }
