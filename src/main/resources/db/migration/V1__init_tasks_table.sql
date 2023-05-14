@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS TASKS;
+
+CREATE TABLE TASKS
+(
+    id          INT PRIMARY KEY AUTO_INCREMENT,
+    description VARCHAR(100) NOT NULL,
+    done        BIT
+);
