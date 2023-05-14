@@ -4,15 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tasks")
-public class Task {
+public class Task extends BaseAuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +22,6 @@ public class Task {
     private boolean done;
 
     private LocalDateTime deadline;
-
-    private LocalDateTime createdOn;
-
-    private LocalDateTime updatedOn;
 
     public Task() {
     }
@@ -68,15 +62,5 @@ public class Task {
         description = source.getDescription();
         done = source.isDone();
         deadline = source.getDeadline();
-    }
-
-    @PrePersist
-    public void prePersist() {
-        createdOn = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void preMerge() {
-        updatedOn = LocalDateTime.now();
     }
 }
