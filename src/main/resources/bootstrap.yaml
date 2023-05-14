@@ -1,0 +1,16 @@
+#  The bootstrap.yml file in a Spring Boot project is used to configure the application before loading the main
+#  configuration file, application.yml or application.properties.
+#
+#  The main purpose of bootstrap.yml is to configure the runtime context for the application.
+#  This means that the file is used to configure aspects of the application that have an impact on
+#  the process of running the application, such as:
+#
+#  Configuration of the configuration server (e.g., URL, username, password)
+#  Configuration of application profiling
+#  Configuration of REST clients or other external services that the application uses
+#  bootstrap.yml is loaded before application.yml or application.properties, so the configuration in it
+#  is available to the entire application. In the case of conflicts between the configuration in bootstrap.yml
+#  and application.yml, the former takes priority.
+#
+# It's worth noting that bootstrap.yml is not required, and many applications don't use it at all.
+# However, if an application requires configuring the runtime context, it's worth considering using this file.
