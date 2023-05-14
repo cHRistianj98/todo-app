@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class InfoController {
 
-    // inject values from configuration
     private final DataSourceProperties dataSourceProperties;
     private final TaskConfigurationProperties taskConfigurationProperties;
 

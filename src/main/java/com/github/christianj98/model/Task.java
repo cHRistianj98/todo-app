@@ -1,6 +1,12 @@
 package com.github.christianj98.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
@@ -18,6 +24,10 @@ public class Task {
     private boolean done;
 
     private LocalDateTime deadline;
+
+    private LocalDateTime createdOn;
+
+    private LocalDateTime updatedOn;
 
     public Task() {
     }
@@ -52,5 +62,21 @@ public class Task {
 
     public void setDeadline(final LocalDateTime deadline) {
         this.deadline = deadline;
+    }
+
+    public void updateFrom(final Task source) {
+        description = source.getDescription();
+        done = source.isDone();
+        deadline = source.getDeadline();
+    }
+
+    @PrePersist
+    public void prePersist() {
+        createdOn = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preMerge() {
+        updatedOn = LocalDateTime.now();
     }
 }
