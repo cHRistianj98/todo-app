@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -26,6 +28,10 @@ public class Task {
 
     @Embedded
     private Audit audit = new Audit();
+
+    @ManyToOne
+    @JoinColumn(name = "task_group_id")
+    private TaskGroup group;
 
     public Task() {
     }
@@ -62,9 +68,18 @@ public class Task {
         this.deadline = deadline;
     }
 
+    public TaskGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(final TaskGroup group) {
+        this.group = group;
+    }
+
     public void updateFrom(final Task source) {
         description = source.getDescription();
         done = source.isDone();
         deadline = source.getDeadline();
+        group = source.group;
     }
 }
