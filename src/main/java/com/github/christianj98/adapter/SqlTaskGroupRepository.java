@@ -12,7 +12,7 @@ import java.util.List;
 public interface SqlTaskGroupRepository extends TaskGroupRepository, JpaRepository<TaskGroup, Integer> {
     @Override
     // Get rid of the problem with n + 1 selects by fetching all tasks
-    @Query("FROM TaskGroup g JOIN FETCH g.tasks")
+    @Query("SELECT DISTINT g FROM TaskGroup g JOIN FETCH g.tasks")
     List<TaskGroup> findAll();
 
     @Override

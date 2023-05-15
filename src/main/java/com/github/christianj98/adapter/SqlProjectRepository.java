@@ -14,7 +14,7 @@ import java.util.List;
 public interface SqlProjectRepository extends ProjectRepository, JpaRepository<Project, Integer> {
     @Override
     // Get rid of the problem with n + 1 selects by fetching all tasks
-    @Query("FROM Project p JOIN FETCH p.steps")
+    @Query("SELECT DISTINT p FROM Project p JOIN FETCH p.steps")
     List<Project> findAll();
 
 }
