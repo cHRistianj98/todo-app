@@ -3,6 +3,8 @@ package com.github.christianj98.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Set;
@@ -17,12 +19,24 @@ public class TaskGroup extends AbstractTaskBase {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
     private Set<Task> tasks;
 
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
+
     public Set<Task> getTasks() {
         return tasks;
     }
 
     public void setTasks(final Set<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(final Project project) {
+        this.project = project;
     }
 
     public void updateFrom(final TaskGroup source) {
