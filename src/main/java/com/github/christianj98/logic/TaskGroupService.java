@@ -5,6 +5,7 @@ import com.github.christianj98.model.TaskGroupRepository;
 import com.github.christianj98.model.TaskRepository;
 import com.github.christianj98.model.projection.GroupReadModel;
 import com.github.christianj98.model.projection.GroupWriteModel;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
