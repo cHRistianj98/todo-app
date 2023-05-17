@@ -5,7 +5,6 @@ import com.github.christianj98.model.TaskGroupRepository;
 import com.github.christianj98.model.TaskRepository;
 import com.github.christianj98.model.projection.GroupReadModel;
 import com.github.christianj98.model.projection.GroupWriteModel;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,6 +40,6 @@ public class TaskGroupService {
         TaskGroup result = taskGroupRepository.findById(groupId).orElseThrow(() ->
                 new IllegalArgumentException("TaskGroup with given id not found"));
         result.setDone(!result.isDone());
-
+        taskGroupRepository.save(result);
     }
 }

@@ -60,6 +60,7 @@ public class ProjectService {
         taskGroup.setDone(false);
         taskGroup.setProject(project);
         taskGroup.setTasks(tasks);
+        taskGroupRepository.save(taskGroup);
 
         return new GroupReadModel(taskGroup);
     }

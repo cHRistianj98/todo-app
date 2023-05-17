@@ -23,6 +23,9 @@ public class TaskGroup extends AbstractTaskBase {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    public TaskGroup() {
+    }
+
     public Set<Task> getTasks() {
         return tasks;
     }
