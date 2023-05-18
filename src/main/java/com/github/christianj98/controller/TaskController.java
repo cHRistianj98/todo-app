@@ -21,7 +21,7 @@ public class TaskController {
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private final TaskRepository repository;
 
-    public TaskController(final TaskRepository repository) {
+    public TaskController(/* @Qualifier("sqlTaskRepository") */final TaskRepository repository) {
         this.repository = repository;
     }
 
