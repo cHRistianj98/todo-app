@@ -1,7 +1,9 @@
 package com.github.christianj98;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 @ConfigurationProperties(prefix = "task")
 public class TaskConfigurationProperties {
     private Template template;
