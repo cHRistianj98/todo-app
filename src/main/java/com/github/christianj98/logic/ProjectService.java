@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Service
+// @Service -> Defined in LogicConfiguration class
 public class ProjectService {
     private final ProjectRepository projectRepository;
 
