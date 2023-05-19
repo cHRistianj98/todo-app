@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class TestConfiguration {
     @Bean
-    @Profile({"integration", "!staging"}) // bean will be wired only if profile is "integration"
+    @Profile("integration") // bean will be wired only if profile is "integration"
         // @ConditionalOnMissingBean
         // @Primary
     TaskRepository testRepo() {
