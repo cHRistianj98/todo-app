@@ -5,16 +5,15 @@ import com.github.christianj98.model.TaskGroupRepository;
 import com.github.christianj98.model.TaskRepository;
 import com.github.christianj98.model.projection.GroupReadModel;
 import com.github.christianj98.model.projection.GroupWriteModel;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+// @Service -> Defined in LogicConfiguration class
 public class TaskGroupService {
 
-    private TaskGroupRepository taskGroupRepository;
-    private TaskRepository taskRepository;
+    private final TaskGroupRepository taskGroupRepository;
+    private final TaskRepository taskRepository;
 
     public TaskGroupService(final TaskGroupRepository taskGroupRepository,
                             final TaskRepository taskRepository) {
