@@ -1,16 +1,15 @@
 package com.github.christianj98.logic;
 
 import com.github.christianj98.TaskConfigurationProperties;
+import com.github.christianj98.adapter.SqlTaskRepository;
 import com.github.christianj98.model.ProjectRepository;
 import com.github.christianj98.model.TaskGroupRepository;
-import com.github.christianj98.model.TaskRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
 
 // Alternative way to configure Dependency Injection for Project Service
 @Configuration
-@ImportResource("classpath:applicationContext.xml")
+//@ImportResource("classpath:applicationContext.xml")
 public class LogicConfiguration {
 
     @Bean
@@ -22,7 +21,7 @@ public class LogicConfiguration {
 
     @Bean
     TaskGroupService taskGroupService(final TaskGroupRepository taskGroupRepository,
-                                      final TaskRepository taskRepository) {
+                                      final SqlTaskRepository taskRepository) {
         return new TaskGroupService(taskGroupRepository, taskRepository);
     }
 }
