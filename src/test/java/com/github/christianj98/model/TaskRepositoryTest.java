@@ -29,7 +29,10 @@ public class TaskRepositoryTest implements TaskRepository {
 
     @Override
     public Task save(final Task entity) {
-        return tasks.put(tasks.size() + 1, entity);
+        final int key = tasks.size() + 1;
+        entity.setId(key);
+        tasks.put(key, entity);
+        return tasks.get(key);
     }
 
     @Override
