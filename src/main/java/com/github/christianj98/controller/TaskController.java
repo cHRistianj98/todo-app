@@ -1,5 +1,6 @@
 package com.github.christianj98.controller;
 
+import com.github.christianj98.adapter.SqlTaskRepository;
 import com.github.christianj98.model.Task;
 import com.github.christianj98.model.TaskRepository;
 import org.slf4j.Logger;
@@ -16,28 +17,29 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@RequestMapping("/tasks")
 public class TaskController {
 
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private final TaskRepository repository;
 
-    public TaskController(/* @Qualifier("sqlTaskRepository") */ /*@Lazy */ final TaskRepository repository) {
+    public TaskController(/* @Qualifier("sqlTaskRepository") */ /*@Lazy */ final SqlTaskRepository repository) {
         this.repository = repository;
     }
 
-    @GetMapping(value = "/tasks", params = {"!sort", "!page", "!size"})
+    @GetMapping(params = {"!sort", "!page", "!size"})
     public ResponseEntity<List<Task>> readAllTasks() {
         logger.warn("Exposing all the tasks!");
         return ResponseEntity.ok(repository.findAll());
     }
 
-    @GetMapping(value = "/tasks")
+    @GetMapping
     public ResponseEntity<List<Task>> readAllTasks(Pageable page) {
         logger.info("Custom pageable");
         return ResponseEntity.ok(repository.findAll(page).getContent());
     }
 
-    @GetMapping("/tasks/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Task> readTask(@PathVariable int id) {
         logger.info("Read one task");
         if (!repository.existsById(id)) {
@@ -46,7 +48,12 @@ public class TaskController {
         return ResponseEntity.ok(repository.findById(id).get());
     }
 
-    @PostMapping("/tasks")
+    @GetMapping("/search/done")
+    ResponseEntity<List<Task>> readDoneTasks(@RequestParam(defaultValue = "true") boolean state) {
+        return ResponseEntity.ok(repository.findByDone(state));
+    }
+
+    @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody @Valid Task task) {
         logger.info("Create one task");
         // assumption: id = 0 does not exist and id = 0 if id was not specified in the request
@@ -61,7 +68,7 @@ public class TaskController {
     }
 
 
-    @PutMapping("/tasks/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -75,7 +82,7 @@ public class TaskController {
     }
 
     @Transactional
-    @PatchMapping("/tasks/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> toggleTask(@PathVariable int id) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
