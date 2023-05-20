@@ -1,6 +1,7 @@
 package com.github.christianj98.controller;
 
 import com.github.christianj98.adapter.SqlTaskRepository;
+import com.github.christianj98.logic.TaskService;
 import com.github.christianj98.model.Task;
 import com.github.christianj98.model.TaskRepository;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/tasks")
@@ -23,14 +25,18 @@ public class TaskController {
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private final TaskRepository repository;
 
-    public TaskController(/* @Qualifier("sqlTaskRepository") */ /*@Lazy */ final SqlTaskRepository repository) {
+    private final TaskService taskService;
+
+    public TaskController(/* @Qualifier("sqlTaskRepository") */ /*@Lazy */ final SqlTaskRepository repository,
+                                                                           final TaskService taskService) {
         this.repository = repository;
+        this.taskService = taskService;
     }
 
     @GetMapping(params = {"!sort", "!page", "!size"})
-    public ResponseEntity<List<Task>> readAllTasks() {
+    public CompletableFuture<ResponseEntity<List<Task>>> readAllTasks() {
         logger.warn("Exposing all the tasks!");
-        return ResponseEntity.ok(repository.findAll());
+        return taskService.findAllAsync().thenApply(ResponseEntity::ok);
     }
 
     @GetMapping
