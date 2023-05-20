@@ -50,4 +50,16 @@ public class Task extends AbstractTaskBase {
         deadline = source.getDeadline();
         group = source.group;
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "deadline=" + deadline +
+                ", audit=" + audit +
+                ", group=" + group +
+                ", id=" + getId() +
+                ", description=" + getDescription() +
+                ", done=" + isDone() +
+                "}";
+    }
 }
