@@ -1,5 +1,6 @@
 package com.github.christianj98.model.projection;
 
+import com.github.christianj98.model.Project;
 import com.github.christianj98.model.TaskGroup;
 
 import java.util.Set;
@@ -26,12 +27,13 @@ public class GroupWriteModel {
         this.tasks = tasks;
     }
 
-    public TaskGroup toGroup() {
+    public TaskGroup toGroup(final Project project) {
         var result = new TaskGroup();
         result.setDescription(description);
         result.setTasks(tasks.stream()
                 .map(GroupTaskWriteModel::toTask)
                 .collect(Collectors.toSet()));
+        result.setProject(project);
         return result;
     }
 }

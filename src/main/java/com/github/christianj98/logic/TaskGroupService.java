@@ -1,5 +1,6 @@
 package com.github.christianj98.logic;
 
+import com.github.christianj98.model.Project;
 import com.github.christianj98.model.TaskGroup;
 import com.github.christianj98.model.TaskGroupRepository;
 import com.github.christianj98.model.TaskRepository;
@@ -22,7 +23,10 @@ public class TaskGroupService {
     }
 
     public GroupReadModel createGroup(GroupWriteModel source) {
-        TaskGroup result = taskGroupRepository.save(source.toGroup());
+        return createGroup(source, null);
+    }
+    public GroupReadModel createGroup(final GroupWriteModel source, final Project project) {
+        TaskGroup result = taskGroupRepository.save(source.toGroup(project));
         return new GroupReadModel(result);
     }
 
@@ -41,4 +45,6 @@ public class TaskGroupService {
         result.setDone(!result.isDone());
         taskGroupRepository.save(result);
     }
+
+
 }

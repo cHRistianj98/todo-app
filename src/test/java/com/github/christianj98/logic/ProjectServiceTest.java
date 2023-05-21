@@ -44,6 +44,9 @@ public class ProjectServiceTest {
     @Mock
     private ProjectRepository projectRepository;
 
+    @Mock
+    private TaskGroupService taskGroupService;
+
     @Test
     @DisplayName("should throw IllegalStateException when configured to allow just 1 group and the other undone group")
     public void createGroup_noMultipleGroupsConfig_And_openGroups_throwsIllegalStateException() {
@@ -52,7 +55,7 @@ public class ProjectServiceTest {
         when(taskConfigurationProperties.getTemplate()).thenReturn(template);
         when(template.isAllowMultipleTasks()).thenReturn(false);
 
-        var toTest = new ProjectService(null, taskGroupRepository, taskConfigurationProperties);
+        var toTest = new ProjectService(null, taskGroupRepository, taskGroupService, taskConfigurationProperties);
 
         // when
         var exception = catchThrowable(() -> toTest.createGroup(0, LocalDateTime.now()));
@@ -80,7 +83,7 @@ public class ProjectServiceTest {
         when(projectRepository.findById(anyInt())).thenReturn(Optional.empty());
 
         // when
-        var toTest = new ProjectService(projectRepository, taskGroupRepository, taskConfigurationProperties);
+        var toTest = new ProjectService(projectRepository, taskGroupRepository, taskGroupService, taskConfigurationProperties);
 
         // then
         assertThatThrownBy(() -> toTest.createGroup(0, LocalDateTime.now()))
@@ -97,7 +100,7 @@ public class ProjectServiceTest {
 
         when(projectRepository.findById(anyInt())).thenReturn(Optional.of(project));
 
-        var toTest = new ProjectService(projectRepository, taskGroupRepository, taskConfigurationProperties);
+        var toTest = new ProjectService(projectRepository, taskGroupRepository, taskGroupService, taskConfigurationProperties);
 
         // when
         GroupReadModel groupModel = toTest.createGroup(1, today);
