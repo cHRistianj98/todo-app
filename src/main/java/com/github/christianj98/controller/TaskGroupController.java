@@ -7,7 +7,10 @@ import com.github.christianj98.model.TaskRepository;
 import com.github.christianj98.model.projection.GroupReadModel;
 import com.github.christianj98.model.projection.GroupTaskReadModel;
 import com.github.christianj98.model.projection.GroupWriteModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +28,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/groups")
 public class TaskGroupController {
+    private static final Logger logger = LoggerFactory.getLogger(TaskGroupController.class);
+
     private final TaskGroupService taskGroupService;
 
     private final TaskGroupRepository taskGroupRepository;
@@ -40,6 +45,7 @@ public class TaskGroupController {
 
     @PostMapping
     public ResponseEntity<GroupReadModel> createGroup(@RequestBody @Valid final GroupWriteModel source) {
+        logger.info("create group");
         final GroupReadModel createdGroup = taskGroupService.createGroup(source);
         String id = Integer.toString(createdGroup.getId());
         String pathToResource = "/groups/{id}";
@@ -52,11 +58,13 @@ public class TaskGroupController {
 
     @GetMapping
     public ResponseEntity<List<GroupReadModel>> readAllGroups() {
+        logger.info("read all groups");
         return ResponseEntity.ok(taskGroupService.readAll());
     }
 
     @PatchMapping("/{groupId}")
     public ResponseEntity<?> toggleGroup(@PathVariable final int groupId) {
+        logger.info("toggle group");
         if (taskGroupRepository.findById(groupId).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -69,5 +77,18 @@ public class TaskGroupController {
         return ResponseEntity.ok(taskRepository.findByGroup_Id(id).stream()
                 .map(GroupTaskReadModel::new)
                 .collect(Collectors.toList()));
+    }
+
+    /*
+        These exception handlers are invoked if exceptions will be thrown
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e) {
+        return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<String> handleIllegalState(IllegalStateException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }
