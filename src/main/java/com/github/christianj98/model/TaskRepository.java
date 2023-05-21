@@ -21,4 +21,5 @@ public interface TaskRepository {
 
     List<Task> findByDone(boolean done);
 
+    List<Task> findByGroup_Id(int groupId);
 }

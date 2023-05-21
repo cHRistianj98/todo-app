@@ -49,4 +49,9 @@ public class TaskRepositoryTest implements TaskRepository {
     public List<Task> findByDone(final boolean done) {
         return null;
     }
+
+    @Override
+    public List<Task> findByGroup_Id(final int groupId) {
+        return null;
+    }
 }
