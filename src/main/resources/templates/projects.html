@@ -18,18 +18,24 @@
                 <!-- Using * we can refer to specific filed for the object in this case ${project.description} is also fine  -->
                 <input type="text" th:field="*{description}"/>
             </label>
-            <fieldset>
-                <legend>Krok 1</legend>
+            <fieldset th:each="step,stepStat : *{steps}">
+                <!--     'Krok ' + ${stepStat.index}           -->
+                <legend th:text="|Krok ${stepStat.index + 1}|"></legend>
                 <label>Opis
-                    <!-- Using * we can refer to specific filed for the object in this case ${project.description} is also fine  -->
-                    <input type="text" th:field="*{steps[0].description}"/>
+                    <input type="text" th:field="*{steps[__${stepStat.index}__].description}"/>
                 </label>
                 <label>Dni przed końcem projektu
-                    <!-- Using * we can refer to specific filed for the object in this case ${project.description} is also fine  -->
-                    <input type="text" th:field="*{steps[0].daysToDeadline}"/>
+                    <input type="number" th:field="*{steps[__${stepStat.index}__].daysToDeadline}"/>
                 </label>
+                <div>
+                    <button type="submit" name="addStep">+</button>
+                </div>
             </fieldset>
         </fieldset>
+        <p>
+            <button type="submit">Dodaj</button>
+            <button type="reset">Wyczyść</button>
+        </p>
     </form>
 
 </main>
