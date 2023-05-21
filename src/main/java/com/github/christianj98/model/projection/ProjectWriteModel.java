@@ -1,10 +1,11 @@
-package com.github.christianj98.logic;
+package com.github.christianj98.model.projection;
 
 import com.github.christianj98.model.Project;
 import com.github.christianj98.model.ProjectStep;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -14,7 +15,11 @@ public class ProjectWriteModel {
     private String description;
 
     @Valid
-    private List<ProjectStep> steps;
+    private List<ProjectStep> steps = new ArrayList<>();
+
+    public ProjectWriteModel() {
+        steps.add(new ProjectStep());
+    }
 
     public String getDescription() {
         return description;

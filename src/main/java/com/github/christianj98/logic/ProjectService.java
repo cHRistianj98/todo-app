@@ -7,6 +7,7 @@ import com.github.christianj98.model.TaskGroupRepository;
 import com.github.christianj98.model.projection.GroupReadModel;
 import com.github.christianj98.model.projection.GroupTaskWriteModel;
 import com.github.christianj98.model.projection.GroupWriteModel;
+import com.github.christianj98.model.projection.ProjectWriteModel;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -9,13 +9,26 @@
 <body>
 
 <main>
-    <!-- th:action will try to send post request under the /projects uri   -->
-    <form action="#" method="post" th:action="@{/projects}">
+    <!-- th:action will try to send post request under the /projects uri @ is for URL only  -->
+    <!--/*@thymesVar id="project" type="com.github.christianj98.model.projection.ProjectWriteModel"*/-->
+    <form action="#" method="post" th:action="@{/projects}" th:object="${project}">
         <fieldset>
             <legend>Nowy projekt</legend>
             <label>Opis
-                <input type="text" />
+                <!-- Using * we can refer to specific filed for the object in this case ${project.description} is also fine  -->
+                <input type="text" th:field="*{description}"/>
             </label>
+            <fieldset>
+                <legend>Krok 1</legend>
+                <label>Opis
+                    <!-- Using * we can refer to specific filed for the object in this case ${project.description} is also fine  -->
+                    <input type="text" th:field="*{steps[0].description}"/>
+                </label>
+                <label>Dni przed końcem projektu
+                    <!-- Using * we can refer to specific filed for the object in this case ${project.description} is also fine  -->
+                    <input type="text" th:field="*{steps[0].daysToDeadline}"/>
+                </label>
+            </fieldset>
         </fieldset>
     </form>
 
