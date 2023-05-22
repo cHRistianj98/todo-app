@@ -9,6 +9,16 @@
 <body>
 
 <main>
+    <h1 th:if="${message != null}" th:text="${message}"></h1>
+    <!--/*@thymesVar id="projects" type="java.util.List<com.github.christianj98.model.Project>"*/-->
+    <dl th:each="project : ${projects}">
+        <dt th:text="${project.description}">...</dt>
+        <dd>
+            <ul>
+                <li th:each="step : ${project.steps}" th:text="|${step.description} (${step.daysToDeadline} dni)|"></li>
+            </ul>
+        </dd>
+    </dl>
     <!-- th:action will try to send post request under the /projects uri @ is for URL only  -->
     <!--/*@thymesVar id="project" type="com.github.christianj98.model.projection.ProjectWriteModel"*/-->
     <form action="#" method="post" th:action="@{/projects}" th:object="${project}">
