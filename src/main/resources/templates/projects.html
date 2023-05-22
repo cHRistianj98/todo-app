@@ -10,6 +10,14 @@
             border: solid 1px black;
         }
 
+        .C\(red\) {
+            color: red;
+        }
+
+        .Bdc\(red\) {
+            border-color: red !important;
+        }
+
         .P\(0\) {
             padding: 0;
         }
@@ -36,20 +44,21 @@
     <!--/*@thymesVar id="project" type="com.github.christianj98.model.projection.ProjectWriteModel"*/-->
 
     <fieldset>
+        <legend>Nowy projekt</legend>
         <form action="#" method="post" th:action="@{/projects}" th:object="${project}">
-            <legend>Nowy projekt</legend>
+            <p class="C(red)" th:if="${#fields.hasAnyErrors()}" th:errors="*{all}"></p>
             <label>Opis
                 <!-- Using * we can refer to specific filed for the object in this case ${project.description} is also fine  -->
-                <input type="text" th:field="*{description}"/>
+                <input type="text" th:field="*{description}" th:errorclass="'Bdc(red)'"/>
             </label>
             <fieldset th:each="step,stepStat : *{steps}">
                 <!--     'Krok ' + ${stepStat.index}           -->
                 <legend th:text="|Krok ${stepStat.index + 1}|"></legend>
                 <label>Opis
-                    <input type="text" th:field="*{steps[__${stepStat.index}__].description}"/>
+                    <input type="text" th:field="*{steps[__${stepStat.index}__].description}" th:errorclass="'Bdc(red)'"/>
                 </label>
                 <label>Dni przed końcem projektu
-                    <input type="number" th:field="*{steps[__${stepStat.index}__].daysToDeadline}"/>
+                    <input type="number" th:field="*{steps[__${stepStat.index}__].daysToDeadline}" th:errorclass="'Bdc(red)'"/>
                 </label>
                 <div>
                     <button type="submit" name="addStep">+</button>
