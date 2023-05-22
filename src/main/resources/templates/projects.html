@@ -5,24 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo App: projects</title>
     <link rel="stylesheet" href="https://unpkg.com/awsm.css/dist/awsm.min.css">
+    <style>
+        .Bd {
+            border: solid 1px black;
+        }
+
+        .P\(0\) {
+            padding: 0;
+        }
+
+        .P\(10\) {
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
 
 <main>
     <h1 th:if="${message != null}" th:text="${message}"></h1>
     <!--/*@thymesVar id="projects" type="java.util.List<com.github.christianj98.model.Project>"*/-->
-    <dl th:each="project : ${projects}">
+    <dl th:each="project : ${projects}" class="Bd P(10px)">
         <dt th:text="${project.description}">...</dt>
         <dd>
-            <ul>
+            <ul class="P(0)">
                 <li th:each="step : ${project.steps}" th:text="|${step.description} (${step.daysToDeadline} dni)|"></li>
             </ul>
         </dd>
     </dl>
     <!-- th:action will try to send post request under the /projects uri @ is for URL only  -->
     <!--/*@thymesVar id="project" type="com.github.christianj98.model.projection.ProjectWriteModel"*/-->
-    <form action="#" method="post" th:action="@{/projects}" th:object="${project}">
-        <fieldset>
+
+    <fieldset>
+        <form action="#" method="post" th:action="@{/projects}" th:object="${project}">
             <legend>Nowy projekt</legend>
             <label>Opis
                 <!-- Using * we can refer to specific filed for the object in this case ${project.description} is also fine  -->
@@ -41,12 +55,13 @@
                     <button type="submit" name="addStep">+</button>
                 </div>
             </fieldset>
-        </fieldset>
-        <p>
-            <button type="submit">Dodaj</button>
-            <button type="reset">Wyczyść</button>
-        </p>
-    </form>
+        </form>
+    </fieldset>
+    <p>
+        <button type="submit">Dodaj</button>
+        <button type="reset">Wyczyść</button>
+    </p>
+
 
 </main>
 
