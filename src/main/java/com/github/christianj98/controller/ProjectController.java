@@ -4,15 +4,18 @@ import com.github.christianj98.logic.ProjectService;
 import com.github.christianj98.model.Project;
 import com.github.christianj98.model.ProjectStep;
 import com.github.christianj98.model.projection.ProjectWriteModel;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -44,6 +47,7 @@ public class ProjectController {
         }
         projectService.createProject(current);
         model.addAttribute("project", new ProjectWriteModel());
+        model.addAttribute("projects", getProjects());
         model.addAttribute("message", "Dodano project!");
         return "projects";
     }
@@ -52,6 +56,20 @@ public class ProjectController {
     // @ModelAttribute -> attribute is from model "project"
     public String addProjectStep(@ModelAttribute("project") ProjectWriteModel current) {
         current.getSteps().add(new ProjectStep());
+        return "projects";
+    }
+
+    @PostMapping("/{id}")
+    public String createGroup(@ModelAttribute("project") ProjectWriteModel current,
+                              Model model,
+                              @PathVariable int id,
+                              // specify format of the date
+                              @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime deadline) {
+        try {
+            projectService.createGroup(id, deadline);
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            model.addAttribute("message", "Błąd podczas tworzenia grupy!");
+        }
         return "projects";
     }
 
