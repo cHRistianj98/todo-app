@@ -4,6 +4,7 @@ import com.github.christianj98.logic.ProjectService;
 import com.github.christianj98.model.Project;
 import com.github.christianj98.model.ProjectStep;
 import com.github.christianj98.model.projection.ProjectWriteModel;
+import io.micrometer.core.annotation.Timed;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,6 +60,8 @@ public class ProjectController {
         return "projects";
     }
 
+    // Counting time of the requests wi the help of an actuator
+    @Timed(value = "project.create.group", histogram = true, percentiles = {0.5, 0.95, 0.99})
     @PostMapping("/{id}")
     public String createGroup(@ModelAttribute("project") ProjectWriteModel current,
                               Model model,
