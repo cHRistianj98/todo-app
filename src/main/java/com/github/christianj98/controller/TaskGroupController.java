@@ -121,17 +121,4 @@ public class TaskGroupController {
     private List<GroupReadModel> getGroups() {
         return taskGroupService.readAll();
     }
-
-    /*
-        These exception handlers are invoked if exceptions will be thrown
-     */
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e) {
-        return ResponseEntity.notFound().build();
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<String> handleIllegalState(IllegalStateException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
 }
