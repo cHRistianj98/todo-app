@@ -4,7 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+// This controller takes into account only these classes which are annotated by IllegalExceptionProcessing.class
+@RestControllerAdvice(annotations = IllegalExceptionProcessing.class)
 public class IllegalExceptionControllerAdvice {
 
     /*

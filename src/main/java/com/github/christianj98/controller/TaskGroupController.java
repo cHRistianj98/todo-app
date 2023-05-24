@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
+@IllegalExceptionProcessing
 @RequestMapping("/groups")
 public class TaskGroupController {
     private static final Logger logger = LoggerFactory.getLogger(TaskGroupController.class);
