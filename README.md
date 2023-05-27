@@ -10,14 +10,8 @@ The application is a simple todo app that demonstrates:
 
 To run the application, you will need to:
 
-1. TBD
-
-## Usage
-
-To use the application, follow these steps:
-
-1. TBD
-
+1. Execute command in terminal
+- mvn spring-boot:run
 
 ## License
 
