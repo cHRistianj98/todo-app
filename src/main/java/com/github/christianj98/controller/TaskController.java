@@ -6,6 +6,7 @@ import com.github.christianj98.model.Task;
 import com.github.christianj98.model.TaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,17 @@ import java.util.concurrent.CompletableFuture;
 public class TaskController {
 
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
+
+    private final ApplicationEventPublisher eventPublisher;
     private final TaskRepository repository;
 
     private final TaskService taskService;
 
-    public TaskController(/* @Qualifier("sqlTaskRepository") */ /*@Lazy */ final SqlTaskRepository repository,
-                                                                           final TaskService taskService) {
+    public TaskController(/* @Qualifier("sqlTaskRepository") */ /*@Lazy */
+            final SqlTaskRepository repository,
+            final ApplicationEventPublisher eventPublisher,
+            final TaskService taskService) {
+        this.eventPublisher = eventPublisher;
         this.repository = repository;
         this.taskService = taskService;
     }
@@ -93,7 +99,10 @@ public class TaskController {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        repository.findById(id).ifPresent(task -> task.setDone(!task.isDone()));
+        // It is important to publish events inside of @Transactional interceptor
+        repository.findById(id)
+                .map(Task::toggle)
+                .ifPresent(eventPublisher::publishEvent);
         return ResponseEntity.noContent().build();
     }
 

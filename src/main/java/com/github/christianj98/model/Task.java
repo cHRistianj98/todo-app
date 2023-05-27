@@ -1,5 +1,7 @@
 package com.github.christianj98.model;
 
+import com.github.christianj98.model.event.TaskEvent;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -42,6 +44,11 @@ public class Task extends AbstractTaskBase {
 
     public void setGroup(final TaskGroup group) {
         this.group = group;
+    }
+
+    public TaskEvent toggle() {
+        this.setDone(!this.isDone());
+        return TaskEvent.changed(this);
     }
 
     public void updateFrom(final Task source) {
