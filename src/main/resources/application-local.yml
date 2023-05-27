@@ -8,11 +8,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+  main:
+    allow-circular-references: true
 management:
   endpoints:
     web:
       exposure:
         include: '*'
+
 keycloak:
   auth-server-url: 'http://localhost:8180/auth'
   realm: 'TodoApp'
