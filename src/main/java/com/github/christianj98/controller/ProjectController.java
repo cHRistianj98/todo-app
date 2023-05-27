@@ -6,6 +6,8 @@ import com.github.christianj98.model.ProjectStep;
 import com.github.christianj98.model.projection.ProjectWriteModel;
 import io.micrometer.core.annotation.Timed;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +25,7 @@ import java.util.List;
  * Project controller is responsible for returning template
  */
 @Controller
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/projects")
 public class ProjectController {
     private final ProjectService projectService;
@@ -32,15 +35,19 @@ public class ProjectController {
     }
 
     @GetMapping
-    public String showProjects(Model model) {
+    public String showProjects(Model model, Authentication auth) {
+//        if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
         model.addAttribute("project", new ProjectWriteModel());
 
         // Spring tries to find template with name projects.html, if it will find then the view will be rendered in the browser
         return "projects";
+//        }
+//        return "index";
+
     }
 
     @PostMapping
-    public String addProject(@ModelAttribute("project")  @Valid ProjectWriteModel current,
+    public String addProject(@ModelAttribute("project") @Valid ProjectWriteModel current,
                              BindingResult bindingResult,
                              Model model) {
         if (bindingResult.hasErrors()) {
